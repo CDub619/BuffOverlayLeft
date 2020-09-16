@@ -69,86 +69,33 @@ local prioritySpellList = { --The higher on the list, the higher priority the bu
 288509, --Shadow Resistance Aura
 }
 
-local units = {
-['raid1'] = true,
-['raid2'] = true,
-['raid3'] = true,
-['raid4'] = true,
-['raid5'] = true,
-['raid6'] = true,
-['raid7'] = true,
-['raid8'] = true,
-['raid9'] = true,
-['raid10'] = true,
-['raid11'] = true,
-['raid12'] = true,
-['raid13'] = true,
-['raid14'] = true,
-['raid15'] = true,
-['raid16'] = true,
-['raid17'] = true,
-['raid18'] = true,
-['raid19'] = true,
-['raid20'] = true,
-['raid21'] = true,
-['raid22'] = true,
-['raid22'] = true,
-['raid23'] = true,
-['raid24'] = true,
-['raid25'] = true,
-['raid26'] = true,
-['raid27'] = true,
-['raid28'] = true,
-['raid29'] = true,
-['raid30'] = true,
-['raid31'] = true,
-['raid32'] = true,
-['raid33'] = true,
-['raid34'] = true,
-['raid35'] = true,
-['raid36'] = true,
-['raid37'] = true,
-['raid38'] = true,
-['raid39'] = true,
-['raid40'] = true,
-['party1'] = true,
-['party2'] = true,
-['party3'] = true,
-['party4'] = true,
-['party5'] = true,
-['player'] = true,
-}
-
 for k, v in ipairs(prioritySpellList) do
 	buffs[v] = k
 end
 
-hooksecurefunc("CompactUnitFrame_UpdateBuffs", function(self)
+hooksecurefunc("CompactUnitFrame_UpdateAuras", function(self)
 	if self:IsForbidden() or not self:IsVisible() or not self.buffFrames then
 		return
 	end
 
 	local unit, index, buff = self.displayedUnit, index, buff
 	for i = 1, 32 do --BUFF_MAX_DISPLAY
-		if units[unit] then
-		local buffName, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, i,"HELPFUL")
-	  --print(unit, i, "|", buffName, "|", spellId)
-	   	if spellId then
-				 if buffs[buffName] then
-						buffs[spellId] = buffs[buffName]
-				 end
-					if buffs[spellId] then
-						if not buff or buffs[spellId] < buffs[buff] then
-							buff = spellId
-							index = i
-						end
-				  end
-			else
-				break
+		local buffName, _, _, _, _, _, _, _, _, spellId = UnitBuff(unit, i,"HELPFUL")
+
+		if spellId then
+			if buffs[buffName] then
+				buffs[spellId] = buffs[buffName]
+			end
+
+			if buffs[spellId] then
+				if not buff or buffs[spellId] < buffs[buff] then
+					buff = spellId
+					index = i
+				end
+			end
+		else
+			break
 		end
- 	   else
-		  break
-	 end
 	end
 
 	local overlay = overlays[self]
