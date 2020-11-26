@@ -51,6 +51,7 @@ local prioritySpellList = { --The higher on the list, the higher priority the bu
 102352, --Cenarion Ward
 279793, --Grove Tending
 295384, --Concentrated Flame (Essence)
+327710, --Benevolent Faerie (Night Fae Priest)
 303698, --Luminous Jellyweed
 204293, --Spirit Link
 974, --Earth Shield (Has Stacks)
