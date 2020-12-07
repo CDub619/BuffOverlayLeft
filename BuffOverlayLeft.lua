@@ -44,7 +44,7 @@ local prioritySpellList = { --The higher on the list, the higher priority the bu
 209426, --Darkness
 145629, --Anti-Magic Zone
 97463, --Rallying Cry
-236696, --Thorns(Friendly and Enemy spellId)
+305497, --Thorns(Friendly and Enemy spellId)
 
 --** Healer CDs Given w/ Short CD**--
 102351, --Cenarion Ward
