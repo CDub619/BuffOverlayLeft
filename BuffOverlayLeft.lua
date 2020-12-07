@@ -51,7 +51,8 @@ local prioritySpellList = { --The higher on the list, the higher priority the bu
 102352, --Cenarion Ward
 279793, --Grove Tending
 295384, --Concentrated Flame (Essence)
-327710, --Benevolent Faerie (Night Fae Priest)
+327710, --Benevolent Faerie CD Reduction (Night Fae Priest)
+327694, --Benevolent Faerie 10% DMG Reduction (Night Fae Priest)
 303698, --Luminous Jellyweed
 204293, --Spirit Link
 974, --Earth Shield (Has Stacks)
@@ -79,9 +80,21 @@ hooksecurefunc("CompactUnitFrame_UpdateAuras", function(self)
 		return
 	end
 
+	local BenevolentDmg, BenevolentCD, BenevolentBoth
+
 	local unit, index, buff = self.displayedUnit, index, buff
 	for i = 1, 32 do --BUFF_MAX_DISPLAY
 		local buffName, _, _, _, _, _, _, _, _, spellId = UnitBuff(unit, i,"HELPFUL")
+
+		if spellId == 327710 then
+			BenevolentCD = true
+		end
+		if spellId == 327694 then
+			BenevolentDmg = true
+		end
+		if BenevolentDmg and BenevolentCD then
+			BenevolentBoth = true
+		end
 
 		if spellId then
 			if buffs[buffName] then
@@ -117,6 +130,25 @@ hooksecurefunc("CompactUnitFrame_UpdateAuras", function(self)
 		overlay:SetSize(self.buffFrames[1]:GetSize())
 		overlay:SetScale(1.15)
 		CompactUnitFrame_UtilSetBuff(overlay, index, UnitBuff(unit, index))
+
+		if BenevolentBoth then
+			overlay.icon:SetDesaturated(1) --Destaurate Icon
+			overlay.icon:SetVertexColor(.1, 1, 0); -- Lighter Green Set
+		elseif BenevolentCD then
+			overlay.icon:SetDesaturated(1) --Destaurate Icon
+			overlay.icon:SetVertexColor(0, .75, 1); -- Light Blue or Turquoise
+		elseif BenevolentDmg then
+			overlay.icon:SetDesaturated(1) --Destaurate Icon
+			overlay.icon:SetVertexColor(1, 1, 0); -- Yellow Set
+		else
+			overlay.icon:SetDesaturated(nil) --Destaurate Icon
+			overlay.icon:SetVertexColor(1, 1, 1); -- Lighter Green Set
+		end
+
+		--overlay.icon:SetVertexColor(0, 0, 1); -- Blue Set
+		--overlay.icon:SetVertexColor(0, 1, 0); -- Green Set
+		--overlay.icon:SetVertexColor(1, 0, 1); -- Purple
+
 	end
 	overlay:SetShown(index and true or false)
 end)
