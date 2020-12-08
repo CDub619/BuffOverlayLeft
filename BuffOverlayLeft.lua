@@ -13,8 +13,7 @@ local prioritySpellList = { --The higher on the list, the higher priority the bu
 
 --**Immunity Raid**--
 
-8178, --Grounding Totem Effect
-213915, --Mass Spell Reflection
+
 
 --**Healer CDs Given**--
 
@@ -87,10 +86,10 @@ hooksecurefunc("CompactUnitFrame_UpdateAuras", function(self)
 		local buffName, _, _, _, _, _, _, _, _, spellId = UnitBuff(unit, i,"HELPFUL")
 
 		if spellId == 327710 then
-			BenevolentCD = true
+			BenevolentCD = i
 		end
 		if spellId == 327694 then
-			BenevolentDmg = true
+			BenevolentDmg = i
 		end
 		if BenevolentDmg and BenevolentCD then
 			BenevolentBoth = true
@@ -132,17 +131,32 @@ hooksecurefunc("CompactUnitFrame_UpdateAuras", function(self)
 		CompactUnitFrame_UtilSetBuff(overlay, index, UnitBuff(unit, index))
 
 		if BenevolentBoth then
+			if index == BenevolentBoth or index == BenevolentCD then
 			overlay.icon:SetDesaturated(1) --Destaurate Icon
 			overlay.icon:SetVertexColor(.1, 1, 0); -- Lighter Green Set
+			else
+			overlay.icon:SetDesaturated(nil)
+			overlay.icon:SetVertexColor(1, 1, 1);
+			end
 		elseif BenevolentCD then
+			if index == BenevolentCD then
 			overlay.icon:SetDesaturated(1) --Destaurate Icon
 			overlay.icon:SetVertexColor(0, .75, 1); -- Light Blue or Turquoise
+			else
+			overlay.icon:SetDesaturated(nil)
+			overlay.icon:SetVertexColor(1, 1, 1);
+			end
 		elseif BenevolentDmg then
+			if index == BenevolentDmg then
 			overlay.icon:SetDesaturated(1) --Destaurate Icon
 			overlay.icon:SetVertexColor(1, 1, 0); -- Yellow Set
+			else
+			overlay.icon:SetDesaturated(nil)
+			overlay.icon:SetVertexColor(1, 1, 1);
+			end
 		else
-			overlay.icon:SetDesaturated(nil) --Destaurate Icon
-			overlay.icon:SetVertexColor(1, 1, 1); -- Lighter Green Set
+			overlay.icon:SetDesaturated(nil)
+			overlay.icon:SetVertexColor(1, 1, 1);
 		end
 
 		--overlay.icon:SetVertexColor(0, 0, 1); -- Blue Set
