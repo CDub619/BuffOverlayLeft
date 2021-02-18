@@ -67,10 +67,10 @@ local prioritySpellList = { --The higher on the list, the higher priority the bu
 289318, --Mark of the Wild
 203538, --Greater Blessing of Kings
 203539, --Greater Blessing of Wisdom
-288477, --Shadow Resistance Aura
-288509, --Shadow Resistance Aura
 317920, --Concentration Aura
 465, --Devotion Aura
+288477, --Shadow Resistance Aura
+288509, --Shadow Resistance Aura
 32223, --Crusader Aura
 183435, --Retribution Aura
 
